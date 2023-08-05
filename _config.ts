@@ -11,5 +11,6 @@ const site = lume({
 
 site.use(code_highlight());
 site.use(sass());
+site.copy("assets");
 
 export default site;

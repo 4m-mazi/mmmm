@@ -1,8 +1,6 @@
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 html,
@@ -14,6 +12,11 @@ body {
 body {
   color: $textColor;
   background: $backgroundColor;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 @media (prefers-color-scheme: dark) {
