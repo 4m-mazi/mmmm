@@ -17,6 +17,7 @@ export default ({ title, site_description, thumbnail }: Props) => (
     {thumbnail && (
       <>
         <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:image" content={thumbnail} />
         <meta property="og:image" content={thumbnail} />
       </>
     )}
