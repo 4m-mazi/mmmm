@@ -1,0 +1,138 @@
+name: Deployment
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+  CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+  CLOUDFLARE_DIRECTORY: _site
+
+on:
+  push:
+    branches: ["**"]
+  pull_request_target:
+
+permissions: {}
+
+jobs:
+  pre-deployment:
+    if: ${{ vars.CLOUDFLARE_PROJECT_NAME != '' }}
+    outputs:
+      branch: ${{ steps.get.outputs.branch }}
+      environment: ${{ steps.get.outputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: get
+        run: |
+          if ${{ github.event_name == 'push' }}; then
+            echo "branch=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          elif ${{ github.event_name == 'pull_request_target' }}; then
+            echo "branch=pull/${{ github.event.number }}/merge" >> "$GITHUB_OUTPUT"
+            if ${{ github.event.pull_request.head.repo.html_url != github.event.repository.html_url }}; then
+              echo "environment=External PR" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            exit 1
+          fi
+  deployment:
+    needs: ["pre-deployment"]
+    env:
+      BRANCH: ${{ needs.pre-deployment.outputs.branch }}
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.pre-deployment.outputs.environment }}
+      url: ${{ steps.publish.outputs.url }}
+
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+
+    steps:
+      - id: pr-checkout
+        if: startsWith( needs.pre-deployment.outputs.branch, 'pull/' ) && endsWith( needs.pre-deployment.outputs.branch, '/merge' )
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+        with:
+          ref: refs/${{ env.BRANCH }}
+
+      - if: steps.pr-checkout.conclusion == 'skipped'
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+        with:
+          ref: ${{ env.BRANCH }}
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31 # v1.1.2
+        with:
+          deno-version: "1.36.0"
+
+      - name: Build
+        run: deno task build
+
+      - id: publish
+        # This workflow does NOT work with v1.5.0
+        uses: cloudflare/pages-action@61eafe73baad0195ab582cb447b2c6e15a0df9ce # v1.4.1
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ env.CLOUDFLARE_PROJECT_NAME }}
+          directory: ${{ env.CLOUDFLARE_DIRECTORY }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ env.BRANCH }}
+
+      - if: ${{ ! cancelled() && github.event_name == 'pull_request_target' }}
+        uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1 # v2.4.0
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: DEPLOYMENT_COMMENT
+
+      - id: comment-data
+        if: steps.fc.conclusion == 'success'
+        run: |
+          head_sha=$(git rev-parse HEAD)
+          get_short_sha_with_link() {
+            echo "<a href='${{ github.event.repository.html_url }}/commit/$1'><code>$(echo "$1" | head -c 7)</code></a>"
+          }
+          echo "commit_text=$(get_short_sha_with_link $(git rev-parse HEAD)) ( base: $(get_short_sha_with_link ${{ github.event.pull_request.base.sha }}) + head: $(get_short_sha_with_link ${{ github.event.pull_request.head.sha }}) )" >> "$GITHUB_OUTPUT"
+          echo "pr_preview_url=$(echo '${{ steps.publish.outputs.url }}' | perl -pe "s|(//).+?(\.)|\$1$(echo '${{ env.BRANCH }}' | perl -pe 's|/|-|g')\$2|")" >> "$GITHUB_OUTPUT"
+      - if: steps.fc.conclusion == 'success'
+        uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!-- DEPLOYMENT_COMMENT -->
+            <table><tr><td><strong>Latest commit:</strong> </td><td>
+            ${{ steps.comment-data.outputs.commit_text }}
+            </td></tr>
+            <tr><td><strong>Status:</strong></td><td>&nbsp;✅&nbsp; Deploy successful!</td></tr>
+            <tr><td><strong>Preview URL:</strong></td><td>
+            <a href='${{ steps.publish.outputs.url }}'>${{ steps.publish.outputs.url }}</a>
+            </td></tr>
+            <tr><td><strong>PR Preview URL:</strong></td><td>
+            <a href='${{ steps.comment-data.outputs.pr_preview_url }}'>${{ steps.comment-data.outputs.pr_preview_url }}</a>
+            </td></tr>
+            </table>
+
+            [View workflow logs](${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }})
+            [View Cloudflare logs](https://dash.cloudflare.com/?to=/${{ env.CLOUDFLARE_ACCOUNT_ID }}/pages/view/${{ env.CLOUDFLARE_PROJECT_NAME }}/${{ steps.publish.outputs.id }})
+          edit-mode: replace
+
+      - uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa # v3.0.2
+        if: failure() && steps.fc.conclusion == 'success'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN}}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!-- DEPLOYMENT_COMMENT -->
+            <table><tr><td><strong>Latest commit:</strong> </td><td>
+            ${{ steps.comment-data.outputs.commit_text }}
+            </td></tr>
+            <tr><td><strong>Status:</strong></td><td>&nbsp;❌&nbsp; Deploy failed!</td></tr>
+            </table>
+
+            [View workflow logs](${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }})
+            [View Cloudflare logs](https://dash.cloudflare.com/?to=/${{ env.CLOUDFLARE_ACCOUNT_ID }}/pages/view/${{ env.CLOUDFLARE_PROJECT_NAME }}/${{ steps.publish.outputs.id }})
+          edit-mode: replace
