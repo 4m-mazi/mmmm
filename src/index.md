@@ -2,7 +2,7 @@
 title: MMMM
 ---
 
-# MMMM コミュニティサイト
+## MMMM コミュニティサイト
 
 ゆるく、つよく、丈夫になるエンジニアコミュニティ MMMM です。
 
@@ -10,7 +10,9 @@ title: MMMM
 - つよく：エンジニアっぽい話を交わし、知識を広げたり、アウトプットすることで成長していきたいと考えています。
 - 丈夫になる：アウトプットを通じて批評や炎上にも耐えられる心を育んでいます。
 
-![](assets/images/join-discord.png)
+<a href="https://discord.gg/EXcpmMXGc7">
+  <img src="assets/images/join-discord.png" />
+</a>
 
 ## 活動内容
 
