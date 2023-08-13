@@ -69,7 +69,7 @@ jobs:
 
       - id: publish
         # This workflow does NOT work with v1.5.0
-        uses: cloudflare/pages-action@61eafe73baad0195ab582cb447b2c6e15a0df9ce # v1.4.1
+        uses: cloudflare/pages-action@f0a1cd58cd66095dee69bfa18fa5efd1dde93bca # v1.5.0
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
