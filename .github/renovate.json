@@ -16,5 +16,14 @@
   "assigneesFromCodeOwners": true,
   "dependencyDashboardAutoclose": true,
   "prConcurrentLimit": 3,
-  "reviewersFromCodeOwners": true
+  "reviewersFromCodeOwners": true,
+  "regexManagers": [
+    {
+      "fileMatch": ["(^|/)deno\\.json$"],
+      "matchStrings": [
+        "\".+?\"\\s*:\\s*\"(?<depName>https:\\\/\\\/deno\\.land\\\/.+?)@v?(?<currentValue>.+?)(?:\\\/.*)?\""
+      ],
+      "datasourceTemplate": "deno"
+    }
+  ]
 }
