@@ -5,7 +5,7 @@
     "serve": "deno task lume -s"
   },
   "imports": {
-    "lume/": "https://deno.land/x/lume@vv1.18.4/"
+    "lume/": "https://deno.land/x/lume@v1.18.4/"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
