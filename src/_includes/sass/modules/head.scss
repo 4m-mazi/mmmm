@@ -1,0 +1,16 @@
+.navigation {
+  padding: 1rem;
+  background-color: purple;
+
+  :hover {
+    background-color: yellowgreen;
+
+  }
+}
+
+.navigation ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style: none;
+}

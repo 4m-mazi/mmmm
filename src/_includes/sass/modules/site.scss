@@ -1,0 +1,38 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: $textColor;
+  background: $backgroundColor;
+}
+
+.content {
+  margin-top: 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    color-scheme: light;
+  }
+}
+
