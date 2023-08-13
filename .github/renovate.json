@@ -21,7 +21,7 @@
     {
       "fileMatch": ["(^|/)deno\\.json$"],
       "matchStrings": [
-        "\".+?\"\\s*:\\s*\"(?<depName>https:\\\/\\\/deno\\.land\\\/.+?)@v?(?<currentValue>.+?)(?:\\\/.*)?\""
+        "\".+?\"\\s*:\\s*\"(?<depName>https:\\\/\\\/deno\\.land\\\/.+?)@(?<currentValue>.+?)(?:\\\/.*)?\""
       ],
       "datasourceTemplate": "deno"
     }
