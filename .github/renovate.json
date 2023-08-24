@@ -19,9 +19,12 @@
   "reviewersFromCodeOwners": true,
   "regexManagers": [
     {
-      "fileMatch": ["(^|/)deno\\.json$"],
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)deno\\.json$"
+      ],
       "matchStrings": [
-        "\".+?\"\\s*:\\s*\"(?<depName>https:\\\/\\\/deno\\.land\\\/.+?)@(?<currentValue>.+?)(?:\\\/.*)?\""
+        "\".+?\"\\s*:\\s*\"(?<depName>https:\\/\\/deno\\.land\\/.+?)@(?<currentValue>.+?)(?:\\/.*)?\""
       ],
       "datasourceTemplate": "deno"
     }
