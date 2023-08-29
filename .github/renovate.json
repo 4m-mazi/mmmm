@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    "config:js-app",
+    ":automergeAll",
+    ":automergePr",
+    ":disablePrControls",
+    ":labels(dependencies)",
+    ":maintainLockFilesWeekly",
+    ":pathSemanticCommitType(.github/workflows/**, ci)",
+    ":prHourlyLimitNone",
+    ":rebaseStalePrs"
+  ],
+  "assignAutomerge": true,
+  "assigneesFromCodeOwners": true,
+  "dependencyDashboardAutoclose": true,
+  "prConcurrentLimit": 3,
+  "reviewersFromCodeOwners": true,
+  "regexManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/)deno\\.json$"
+      ],
+      "matchStrings": [
+        "\".+?\"\\s*:\\s*\"(?<depName>https:\\/\\/deno\\.land\\/.+?)@(?<currentValue>.+?)(?:\\/.*)?\""
+      ],
+      "datasourceTemplate": "deno"
+    }
+  ]
+}
