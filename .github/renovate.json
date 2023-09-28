@@ -17,7 +17,7 @@
   "dependencyDashboardAutoclose": true,
   "prConcurrentLimit": 3,
   "reviewersFromCodeOwners": true,
-  "regexManagers": [
+  "customManagers": [
     {
       "customType": "regex",
       "fileMatch": [
