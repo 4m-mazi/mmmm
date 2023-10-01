@@ -1,10 +1,11 @@
 type Props = {
+  domain: string;
   title: string;
   site_description: string;
   thumbnail: string;
 };
 
-export default ({ title, site_description, thumbnail }: Props) => (
+export default ({ domain, title, site_description, thumbnail }: Props) => (
   <>
     {title && <meta property="og:title" content={title} />}
     {site_description && (
@@ -17,7 +18,7 @@ export default ({ title, site_description, thumbnail }: Props) => (
     {thumbnail && (
       <>
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="og:image" content={thumbnail} />
+        <meta property="og:image" content={`${domain}${thumbnail}`} />
       </>
     )}
   </>
