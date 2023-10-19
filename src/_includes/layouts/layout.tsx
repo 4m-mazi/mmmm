@@ -1,6 +1,6 @@
 // Page specific interfaces
 import type { PageData } from "lume/core.ts";
-import { navigation } from "../../_data/navigation.ts";
+
 interface LayoutData extends PageData {
   domain: string;
   title: string;
@@ -18,18 +18,15 @@ export default (data: LayoutData) => (
       <meta charSet="UTF-8" />
       <link rel="stylesheet" type="text/css" href="/css/index.css" />
       <title>{data.title}</title>
-      <Head
-        domain={data.domain}
-        title={data.title}
-        site_description={data.site_description}
-        thumbnail={data.thumbnail}
-      />
+      <Head {...data} />
     </head>
     <body>
-      <header>
-        <Nav navigation={navigation} />
-      </header>
-      <main className="content">{data.children}</main>
+      <div className="container">
+        <header>
+          <Nav />
+        </header>
+        <main className="content">{data.children}</main>
+      </div>
     </body>
   </html>
 );

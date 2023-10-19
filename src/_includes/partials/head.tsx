@@ -1,9 +1,10 @@
-type Props = {
+import type { PageData } from "lume/core.ts";
+interface Props extends PageData {
   domain: string;
   title: string;
   site_description: string;
   thumbnail: string;
-};
+}
 
 export default ({ domain, title, site_description, thumbnail }: Props) => (
   <>
