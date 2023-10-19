@@ -1,14 +1,12 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  height: 100%;
   font-family: 'Arial', sans-serif;
 }
 
@@ -19,35 +17,41 @@ body {
 
 main {
   flex: 1;
-  padding: 20px;
+  padding: 5rem;
+  display: flex;
+  gap: 1.5rem;
 
-  &.content {
-    margin-top: 1rem;
+  & .avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+  }
+  & .content {
+    h1,h2,h3 {
+      margin: 0;
+    }
+
+    p {
+      margin: 4px 0 16px;
+    }
+  }
+  & .content > .author-name {
+    margin: 0;
+    color: #d7d771;
+    font-weight: bold;
   }
 }
 
 img {
   max-width: 100%;
+  border-radius: 10px;
   height: auto;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  html {
-    color-scheme: light;
-  }
 }
 
 body, html {
   margin: 0;
   padding: 0;
-  height: 100%;
-  font-family: 'Arial', sans-serif;
+  font-family: droid sans, sans-serif;
 }
 
 .container {
@@ -56,13 +60,13 @@ body, html {
 }
 
 header {
-  width: 15%;
+  width: 17%;
+  padding-top: 1rem;
   background: linear-gradient(to bottom left, #110D33, #090614); // 左上から右下へのグラデーション
   position: relative;
 
   color: #9fa3b0;
   min-height: 100vh;
-  box-sizing: border-box;
 
   ul {
       margin: 0 8px;

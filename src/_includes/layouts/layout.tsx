@@ -6,6 +6,8 @@ interface LayoutData extends PageData {
   title: string;
   site_description: string;
   thumbnail: string;
+  avatar: string;
+  author: string;
 }
 
 // Helper function specific interface
@@ -25,7 +27,13 @@ export default (data: LayoutData) => (
         <header>
           <Nav />
         </header>
-        <main className="content">{data.children}</main>
+        <main>
+          <img className="avatar" src={data.avatar} />
+          <div className="content">
+            <p className="author-name">{data.author}</p>
+            {data.children}
+          </div>
+        </main>
       </div>
     </body>
   </html>
