@@ -1,18 +1,14 @@
-interface Props {
-  navigation: {
-    title: string;
-    url: string;
-  }[];
-}
-
-export default (props: Props) => {
+import { navigation } from "../../_data/navigation.ts";
+export default () => {
   return (
     <nav>
       <ul>
-        {/* {props.props.navigation[0].title} */}
-        {props.navigation.map((item) => (
-          <li>
-            <a href={item.url}>{item.title}</a>
+        {navigation.map((item) => (
+          <li key={item.title}>
+            <a href={item.url}>
+              <span className="icon">#</span>
+              {item.title}
+            </a>
           </li>
         ))}
       </ul>
