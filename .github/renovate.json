@@ -10,7 +10,8 @@
     ":maintainLockFilesWeekly",
     ":pathSemanticCommitType(.github/workflows/**, ci)",
     ":prHourlyLimitNone",
-    ":rebaseStalePrs"
+    ":rebaseStalePrs",
+    "regexManagers:githubActionsVersions"
   ],
   "assignAutomerge": true,
   "assigneesFromCodeOwners": true,
