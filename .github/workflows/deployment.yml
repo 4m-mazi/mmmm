@@ -5,6 +5,9 @@ env:
   CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
   CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
   CLOUDFLARE_DIRECTORY: _site
+  # tool versions
+  # renovate: datasource=github-releases depName=denoland/deno
+  DENO_VERSION: v1.36.0
 
 on:
   push:
@@ -62,7 +65,7 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@0df5d9c641efdff149993c321fc27c11c5df8623 # v1.1.3
         with:
-          deno-version: "1.36.0"
+          deno-version: ${{ env.DENO_VERSION }}
 
       - name: Build
         run: deno task build
