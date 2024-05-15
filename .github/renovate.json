@@ -11,7 +11,7 @@
     ":pathSemanticCommitType(.github/workflows/**, ci)",
     ":prHourlyLimitNone",
     ":rebaseStalePrs",
-    "regexManagers:githubActionsVersions"
+    "customManagers:githubActionsVersions"
   ],
   "assignAutomerge": true,
   "assigneesFromCodeOwners": true,
