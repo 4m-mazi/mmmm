@@ -7,7 +7,7 @@ env:
   CLOUDFLARE_DIRECTORY: _site
   # tool versions
   # renovate: datasource=github-releases depName=denoland/deno
-  DENO_VERSION: v1.43.3
+  DENO_VERSION: v1.44.0
 
 on:
   push:
