@@ -1,0 +1,49 @@
+name: Trigger Renovate
+on:
+  issues:
+    # Dependency Dashboard
+    types: [edited]
+  pull_request_target:
+    types:
+      # rebaseLabel
+      - labeled
+      # stopUpdatingLabel
+      - unlabeled
+      # PrControls
+      - edited
+      # ignore update
+      - closed
+      # Edited/Blocked
+      - synchronize
+    branches: ["main"]
+  push:
+    branches:
+      - "main"
+      # https://docs.renovatebot.com/config-validation/#validation-of-renovate-config-change-prs
+      - "renovate/reconfigure"
+  # This lets you dispatch a renovate job with different cache options if you want to reset or disable the cache manually.
+  workflow_dispatch:
+    inputs:
+      repoCache:
+        description: "Reset or disable the cache?"
+        type: choice
+        default: enabled
+        options:
+          - enabled
+          - disabled
+          - reset
+
+permissions: {}
+
+jobs:
+  renovate:
+    uses: 4m-mazi/renovate-workflow/.github/workflows/_renovate.yml@main
+    with:
+      repoCache: ${{ inputs.repoCache }}
+    secrets:
+      # [permissions]─────────────────────────────────────
+      #   [read and write]
+      #     repo: Contents
+      # ──────────────────────────────────────────────────
+      app-id: ${{ vars.MAZI_TRIGGER_APP_ID }}
+      private-key: ${{ secrets.MAZI_TRIGGER_PRIVATE_KEY }}
