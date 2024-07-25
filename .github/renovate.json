@@ -18,6 +18,16 @@
   "dependencyDashboardAutoclose": true,
   "prConcurrentLimit": 3,
   "reviewersFromCodeOwners": true,
+  "packageRules": [
+    {
+      "matchPackageNames": ["https://deno.land/x/lume"],
+      "postUpgradeTasks": {
+        "commands": [
+          "deno task lume upgrade --version={{{newVersion}}}"
+        ]
+      }
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
