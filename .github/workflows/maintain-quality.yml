@@ -3,7 +3,7 @@ name: Maintain code quality
 env:
   # tool versions
   # renovate: datasource=github-releases depName=denoland/deno
-  DENO_VERSION: v1.45.2
+  DENO_VERSION: v1.45.3
 
 on:
   push:
