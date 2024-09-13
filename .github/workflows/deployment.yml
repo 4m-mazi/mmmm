@@ -63,7 +63,7 @@ jobs:
           ref: ${{ env.BRANCH }}
 
       - name: Setup Deno
-        uses: denoland/setup-deno@ba9dcf3bc3696623d1add6a2f5181ee1b5143de5 # v1.3.0
+        uses: denoland/setup-deno@5e01c016a857a4dbb5afe9d0f9733cd472cba985 # v1.5.1
         with:
           deno-version: ${{ env.DENO_VERSION }}
 
