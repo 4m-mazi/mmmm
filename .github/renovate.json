@@ -32,8 +32,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "(^|/)deno\\.json$"
+      "managerFilePatterns": [
+        "/(^|/)deno\.json$/"
       ],
       "matchStrings": [
         "\".+?\"\\s*:\\s*\"(?<depName>https:\\/\\/deno\\.land\\/.+?)@(?<currentValue>.+?)(?:\\/.*)?\""
